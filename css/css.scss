@@ -1,0 +1,163 @@
+@mixin middlePositionFixed {
+    // 完全居中
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+@mixin middlePositionAbsolute {
+    // 完全居中
+    position: absolute;
+    left: var(--left, 50%);
+    top: var(--top, 50%);
+}
+@mixin fromTop {
+    animation: saltfromTop 0.35s;
+}
+@mixin fadeTop {
+    animation: saltfadeTop 0.35s;
+}
+
+@keyframes saltfromTop {
+    from {
+        opacity: 0;
+        top: 0;
+        transition-timing-function: ease-out;
+    }
+    to {
+        opacity: 1;
+        top: 50%;
+        transition-timing-function: ease-out;
+    }
+}
+@keyframes saltfadeTop {
+    from {
+        opacity: 1;
+        top: 50%;
+        transition-timing-function: ease-in;
+    }
+    to {
+        opacity: 0;
+        top: 0;
+        transition-timing-function: ease-in;
+    }
+}
+@keyframes saltfade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@keyframes saltfade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+// 淡出
+.fade,
+.fade-out {
+    opacity: 0;
+    pointer-events: none;
+    &.out {
+        animation: saltfade-out 0.35s;
+    }
+    &.top {
+        @include fadeTop;
+    }
+}
+// 淡入
+.fade-in {
+    opacity: 1;
+    &.in {
+        animation: saltfade-in 0.35s;
+    }
+    &.top {
+        @include fromTop;
+    }
+}
+// 按钮
+.btn {
+    cursor: pointer;
+    user-select: none;
+    text-align: center;
+    // 禁用
+    &.disable {
+        cursor: not-allowed;
+        pointer-events: none;
+    }
+}
+// 确认框
+.saltConfirmContainer {
+    // 居中
+    @include middlePositionFixed;
+    // 淡入
+    // @include fadeTop;
+    // 宽高控制
+    width: 25rem;
+    max-width: 80vw;
+    min-width: 16rem;
+    max-height: 80vh;
+    z-index: 10000;
+    // 外观控制
+    background-color: #f9f9f9;
+    background-clip: content-box;
+    border: 8px solid rgba($color: #666, $alpha: 0.5);
+    border-radius: 8px;
+    box-shadow: 2px 2px 5px 1px #222;
+    // 其他
+    overflow: hidden;
+    font-size: 1rem;
+    user-select: none;
+    > center {
+        padding: 0.5rem 1rem;
+        // font-size: 1.05rem;
+    }
+    .btn {
+        box-sizing: border-box;
+        float: left;
+        width: calc(50% - 2rem);
+        // border: 1px solid #ccc;
+        padding: 1rem;
+        margin: 0.5rem 1rem 0 1rem;
+        font-size: 1.15rem;
+        line-height: 1.15rem;
+        background-color: transparent;
+        // transition: 0.3s ease;
+    }
+    // 关闭按钮
+    .close {
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        top: 0;
+        right: 0;
+        padding: 0;
+        margin: 0;
+        border-radius: 1rem;
+        font-size: 2rem;
+        line-height: 2rem;
+        text-align: center;
+    }
+}
+// 提示框
+.saltToolTip {
+    @include middlePositionAbsolute;
+    min-width: 2rem;
+    max-width: 40vw;
+    min-height: 1rem;
+    max-height: 40vh;
+    padding: 0.5rem;
+    z-index: 10010;
+    // 外观
+    background-color: #f9f9f9;
+    border-radius: 0.25rem;
+    box-shadow: 2px 2px 5px 1px #222;
+    // 其他
+    font-size: 1rem;
+    white-space: normal;
+}
