@@ -11,11 +11,17 @@
     left: var(--left, 50%);
     top: var(--top, 50%);
 }
+@mixin fadeIn {
+    animation: saltfade-in 0.3s;
+}
 @mixin fromTop {
-    animation: saltfromTop 0.35s;
+    animation: saltfromTop 0.3s;
+}
+@mixin fadeOut {
+    animation: saltfade-out 0.3s;
 }
 @mixin fadeTop {
-    animation: saltfadeTop 0.35s;
+    animation: saltfadeTop 0.3s;
 }
 
 @keyframes saltfromTop {
@@ -64,7 +70,7 @@
     opacity: 0;
     pointer-events: none;
     &.out {
-        animation: saltfade-out 0.35s;
+        @include fadeOut;
     }
     &.top {
         @include fadeTop;
@@ -74,7 +80,7 @@
 .fade-in {
     opacity: 1;
     &.in {
-        animation: saltfade-in 0.35s;
+        @include fadeIn;
     }
     &.top {
         @include fromTop;
@@ -114,7 +120,8 @@
     font-size: 1rem;
     user-select: none;
     > center {
-        padding: 0.5rem 1rem;
+        padding: 0.5rem 1rem 1rem;
+        border-bottom: 1px solid #666;
         // font-size: 1.05rem;
     }
     .btn {
@@ -123,7 +130,7 @@
         width: calc(50% - 2rem);
         // border: 1px solid #ccc;
         padding: 1rem;
-        margin: 0.5rem 1rem 0 1rem;
+        margin: 0 1rem 0 1rem;
         font-size: 1.15rem;
         line-height: 1.15rem;
         background-color: transparent;

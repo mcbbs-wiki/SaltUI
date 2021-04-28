@@ -1,12 +1,3 @@
-// ==UserScript==
-// @name         ReferenceToolTip-test
-// @namespace    http://tampermonkey.net/
-// @version      0.1
-// @description  miaomiaomiao?
-// @author       S
-// @match        https://mcbbs-wiki.cn/*
-// @grant        none
-// ==/UserScript==
 // 给HTMLElement原型添加奇怪的方法
 (function () {
     if (!HTMLElement.prototype.addClass) {
@@ -110,7 +101,7 @@
         done: '完成',
     }
     const log = console.log, time = console.time, timeEnd = console.timeEnd
-    let prefix = '[SaltUI]'
+    let prefix = '[SaltUI]'//, techprefix = 'SaltUI-'
     let ver = '0.1.0'
     // 开始计时
     log(prefix + ver + '正在加载'); time(prefix + ver + '加载完毕')
@@ -119,6 +110,10 @@
         window.SaltConfirm = saltConfirm
         window.SaltToolTip = saltToolTip
         window.SaltHoverToolTip = saltHoverToolTip
+        window.SaltWrite = write
+        window.Salt$ = salt$
+        window.SaltRead = readWithDefault
+        window.SaltReadWithDefault = readWithDefault
     }
     /** 
      * assert: 断言
@@ -218,14 +213,14 @@
             // container.style.transitionDuration = '.3s'
             // container.style.opacity = '1'
             // container.style.top = '50%'
-            setTimeout(() => { container.removeClass('fade-in top') }, 400)
+            setTimeout(() => { container.removeClass('fade-in top') }, 300)
             /**移除这个确认框 */
             function selfRemove() {
                 // container.style.width = container.offsetWidth + 'px' // 触发动画
                 // void container.offsetWidth // 触发动画
                 container.style.animation = 'saltfadeTop 0.35s' // 触发动画 终 极 解 决 方 案
                 container.addClass('fade top')
-                setTimeout(() => { container.remove() }, 400)
+                setTimeout(() => { container.remove() }, 300)
             }
         })
     }
@@ -267,13 +262,13 @@
                     setTimeout(() => {
                         stt.remove() // 清理自身
                         // stt = null // 等待清理内存
-                    }, 400)
+                    }, 300)
                     // 绑定元素的事件解绑
                     bindElement.removeEventListener('mouseenter', ct)
                     bindElement.removeEventListener('mouseleave', tc)
                     window.removeEventListener('resize', posFix)
                     r()
-                }, 400);
+                }, 250);
             }
             /**清除关闭计时 */
             let ct = () => {
@@ -356,13 +351,13 @@
                 enable = true
             },
             enable: function () {
-                enable = false
+                enable = true
             },
             stop: function () {
                 enable = false
             },
             disable: function () {
-                enable = true
+                enable = false
             },
             edit: function (argu: string | Element, argu2?: boolean) {
                 _a1 = argu
@@ -370,6 +365,78 @@
             }
         }
     }
+    /**将在页面下载完毕后, 资源加载完毕前调用这些函数 */
+    function salt$(...func: (() => void)[]): void;
+    /**
+     * 返回符合选择器的HTML元素数组
+     * @param selector 选择器, 写法类似于CSS选择器
+     * @param limit 限制数量, 默认32767
+     */
+    function salt$(selector: string, limit?: number): HTMLElement[];
+    function salt$(): any {
+        let _argu = arguments
+        let type = typeof _argu[0]
+        switch (type) {
+            case 'string': return selector()
+            case 'function': return runFunc()
+        }
+        function runFunc() {
+            // let funcs: (() => void)[] = []
+            let fun = () => {
+                for (let i = 0; i < _argu.length; i++) {
+                    let f: () => void = _argu[i]
+                    if (typeof f == 'function')
+                        f.call(null)
+                }
+            }
+            if (document.readyState == 'loading')
+                document.addEventListener('DOMContentLoaded', fun)
+            else
+                fun()
+        }
+        function selector() {
+            let limit = _argu[1] ?? 32767, res: HTMLElement[] = []
+            let result = document.querySelectorAll(_argu[0]), len = result.length
+            for (let i = 0; i < len; i++)
+                if (result[i] instanceof HTMLElement)
+                    if (res.length < limit)
+                        res.push(result[i])
+                    else
+                        break
+            return res
+        }
+    }
+    /**
+     * 根据key存入本地存储
+     * @param key 键值
+     * @param value 要存放的值
+     */
+    function write(key: string, value: any) {
+        assert(key.length > 0)
+        if (value) {
+            value = JSON.stringify(value);
+        }
+        localStorage.setItem(key, value);
+    }
+    /**
+     * 根据key读取本地数据，若没有则写入默认数据
+     * @param key 键值
+     */
+    function readWithDefault<T>(key: string, defaultValue: T): T {
+        assert(key.length > 0)
+        let value: string | null = localStorage.getItem(key);
+        if (value && value != "undefined" && value != "null") {
+            let temp = <T>JSON.parse(value)
+            if (typeof defaultValue == 'boolean' && typeof temp == 'string') { // 防坑措施
+                // @ts-ignore
+                if (temp == 'true') { temp = true } else { temp = false }
+            }
+            return temp;
+        }
+        write(key, defaultValue)
+        return defaultValue;
+    }
+    // let read = readWithDefault
     // 调用主函数
     main()
     // 计时结束

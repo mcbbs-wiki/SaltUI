@@ -1,0 +1,9 @@
+// ==UserScript==
+// @name         Salt-UI
+// @namespace    http://salt.is.lovely/
+// @version      0.1.1
+// @description  miaomiaomiao?
+// @author       Salt
+// @match        https://mcbbs-wiki.cn/*
+// @grant        none
+// ==/UserScript==

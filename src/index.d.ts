@@ -43,6 +43,35 @@ interface Window {
      */
     SaltHoverToolTip(bindElement: HTMLElement, element: Element, deepClone?: boolean)
         : { restart(): void, enable(): void, stop(): void, disable(): void, edit(argu: string | Element, argu2?: boolean): void },
+    /**在页面下载完毕后, 立即调用这些函数
+     * 
+     * 如果函数运行时间太长可能会堵塞页面加载
+     * 
+     * 届时请考虑async关键字
+     */
+    Salt$(...func: (() => void)[]): void,
+    /**
+     * 返回符合选择器的HTML元素数组
+     * @param selector 选择器, 写法类似于CSS选择器
+     * @param limit 限制数量, 默认32767
+     */
+    Salt$(selector: string, limit?: number): HTMLElement[],
+    /**
+    * 根据key存入本地存储
+    * @param key 键值
+    * @param value 要存放的值
+    */
+    SaltWrite(key: string, value: any),
+    /**
+     * 根据key读取本地数据，若没有则写入默认数据
+     * @param key 键值
+     */
+    SaltRead<T>(key: string, defaultValue: T): T,
+    /**
+     * 根据key读取本地数据，若没有则写入默认数据
+     * @param key 键值
+     */
+    SaltReadWithDefault<T>(key: string, defaultValue: T): T,
 }
 interface HTMLElement {
     /**

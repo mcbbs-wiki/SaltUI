@@ -1,3 +1,12 @@
+// ==UserScript==
+// @name         Salt-UI
+// @namespace    http://salt.is.lovely/
+// @version      0.1.1
+// @description  miaomiaomiao?
+// @author       Salt
+// @match        https://mcbbs-wiki.cn/*
+// @grant        none
+// ==/UserScript==
 "use strict";
 (function () {
     if (!HTMLElement.prototype.addClass) {
@@ -344,4 +353,61 @@
     }
     main();
     timeEnd(prefix + ver + '加载完毕');
+})();
+"use strict";
+(function () {
+    let s = document.createElement('style');
+    s.textContent = `@keyframes saltfromTop{from{opacity:0;top:0;transition-timing-function:ease-out}to{opacity:1;top:50%;transition-timing-function:ease-out}}@keyframes saltfadeTop{from{opacity:1;top:50%;transition-timing-function:ease-in}to{opacity:0;top:0;transition-timing-function:ease-in}}@keyframes saltfade-in{from{opacity:0}to{opacity:1}}@keyframes saltfade-out{from{opacity:1}to{opacity:0}}.fade,.fade-out{opacity:0;pointer-events:none}.fade.out,.fade-out.out{animation:saltfade-out 0.3s}.fade.top,.fade-out.top{animation:saltfadeTop 0.3s}.fade-in{opacity:1}.fade-in.in{animation:saltfade-in 0.3s}.fade-in.top{animation:saltfromTop 0.3s}.btn{cursor:pointer;user-select:none;text-align:center}.btn.disable{cursor:not-allowed;pointer-events:none}.saltConfirmContainer{position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);width:25rem;max-width:80vw;min-width:16rem;max-height:80vh;z-index:10000;background-color:#f9f9f9;background-clip:content-box;border:8px solid rgba(102,102,102,0.5);border-radius:8px;box-shadow:2px 2px 5px 1px #222;overflow:hidden;font-size:1rem;user-select:none}.saltConfirmContainer>center{padding:0.5rem 1rem 1rem;border-bottom:1px solid #666}.saltConfirmContainer .btn{box-sizing:border-box;float:left;width:calc(50% - 2rem);padding:1rem;margin:0 1rem 0 1rem;font-size:1.15rem;line-height:1.15rem;background-color:transparent}.saltConfirmContainer .close{position:absolute;width:2rem;height:2rem;top:0;right:0;padding:0;margin:0;border-radius:1rem;font-size:2rem;line-height:2rem;text-align:center}.saltToolTip{position:absolute;left:var(--left, 50%);top:var(--top, 50%);min-width:2rem;max-width:40vw;min-height:1rem;max-height:40vh;padding:0.5rem;z-index:10010;background-color:#f9f9f9;border-radius:0.25rem;box-shadow:2px 2px 5px 1px #222;font-size:1rem;white-space:normal}
+    `;
+    document.head.appendChild(s);
+})();
+"use strict";
+(function () {
+    const read = window.SaltRead, write = window.SaltRead, $ = window.Salt$, bindtooltip = window.SaltHoverToolTip;
+    const userIntroducion = [
+        { name: 'salt_lovely', nick: '盐酱', state: 'MCBBSWiki行政员, 负责前端和巡查', color: '#0040ff' },
+        { name: 'eicy', nick: '幻沙', state: 'MCBBSWiki站长, 负责掏钱(划掉)后端' },
+        { name: 'sheep-realms‎', nick: '绵羊', state: 'MCBBSWiki副站长, 负责后端', color: 'green' },
+        { name: 'mashKJo', nick: '穹妹', state: 'MCBBSWiki行政员, 负责整活和处理烂摊子' },
+        { name: 'white_i', nick: '白艾', state: 'MCBBSWiki吉祥物行政员' },
+        { name: '我是人1012', nick: '文章生成器', state: 'MCBBSWiki吉祥物管理员' },
+        { name: '自由李代数', nick: '李代数', state: 'MCBBSWiki管理员, 负责巡查, 编辑量巨大' },
+        { name: 'QWERTY_52_38', state: 'MCBBSWiki巡查员, 负责巡查页面' },
+        { name: 'jaanai', state: 'MCBBSWiki巡查员, 负责巡查和卖萌(以及被捏)' },
+        { name: '凛夜丶雨月', state: 'MCBBSWiki吉祥物巡查员' },
+    ];
+    function userIntroduce() {
+    }
+    function reconfirmRollback() {
+        let main = () => {
+            var _a, _b, _c, _d, _e, _f, _g, _h;
+            let anchor = $('.mw-rollback-link a');
+            for (let a of anchor) {
+                let href = (_a = a.getAttribute('href')) !== null && _a !== void 0 ? _a : '';
+                let times = (_d = ((_c = ((_b = a.textContent) !== null && _b !== void 0 ? _b : '').match(/回退(.+)次/i)) !== null && _c !== void 0 ? _c : [null, null])[1]) !== null && _d !== void 0 ? _d : '未知数量';
+                let user = decodeURI((_f = ((_e = href.match(/from=([^\&]+)\&/i)) !== null && _e !== void 0 ? _e : [null, null])[1]) !== null && _f !== void 0 ? _f : '未知用户名')
+                    .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\+/g, '_');
+                let page = decodeURI((_h = ((_g = href.match(/title=([^\&]+)\&/i)) !== null && _g !== void 0 ? _g : [null, null])[1]) !== null && _h !== void 0 ? _h : '未知页面名')
+                    .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\%26/g, '&amp;');
+                let str = '回退由 <b>' + user + '</b> 对 <b>' + page + '</b> 作出的<b>' + times + '</b>次编辑';
+                bindtooltip(a, str, true);
+                let handler = (ev) => {
+                    ev.preventDefault();
+                    window.SaltConfirm({
+                        text: '确定要' + str + '吗？',
+                        confirm: '确认回退',
+                        cancel: '手滑点错',
+                        isHTML: true
+                    }).then((res) => {
+                        if (res)
+                            window.location.href = href;
+                    });
+                };
+                a.addEventListener('click', handler);
+                a.addEventListener('touchend', handler);
+            }
+        };
+        main();
+    }
+    $(reconfirmRollback, userIntroduce);
 })();
