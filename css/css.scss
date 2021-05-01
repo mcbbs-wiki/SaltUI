@@ -155,16 +155,65 @@
 .saltToolTip {
     @include middlePositionAbsolute;
     min-width: 2rem;
-    max-width: 40vw;
+    max-width: 50vw;
     min-height: 1rem;
-    max-height: 40vh;
-    padding: 0.5rem;
+    max-height: 50vh;
+    padding: 0.25rem 0.5rem;
     z-index: 10010;
     // 外观
     background-color: #f9f9f9;
-    border-radius: 0.25rem;
-    box-shadow: 2px 2px 5px 1px #222;
+    // border-radius: 0.25rem;
+    box-shadow: 2px 2px 5px 1px #666;
+    transition: box-shadow 0.3s ease;
     // 其他
     font-size: 1rem;
     white-space: normal;
+    &:hover {
+        box-shadow: 1px 1px 3px 0px #666;
+    }
+}
+// 选项卡
+#saltUI-setting {
+    // padding-top: 0 !important;
+    a {
+        position: relative;
+        top: -5px;
+    }
+    .icon {
+        width: 20px;
+        height: 20px;
+        fill: #000;
+        border-radius: 2px;
+        opacity: 0.5;
+    }
+    &:active {
+        .icon {
+            box-shadow: 0 0 0 1px #fff, 0 0 0 3px #36c;
+        }
+    }
+}
+#settingPanel {
+    position: fixed;
+    // width: 20rem;
+    padding: 0.5rem 0;
+    min-height: 1rem;
+    max-height: 70vh;
+    background-color: #f9f9f9;
+    box-shadow: 1px 1px 3px 0px #666;
+    border-radius: 2px;
+    z-index: 9990;
+    .setting {
+        background-color: transparent;
+        transition: background-color 0.1s ease;
+        &:hover {
+            background-color: rgba($color: #999, $alpha: 0.2);
+        }
+        &:active {
+            background-color: rgba($color: #999, $alpha: 0.5);
+        }
+        span {
+            display: inline-block;
+            box-sizing: border-box;
+        }
+    }
 }

@@ -1,12 +1,3 @@
-// ==UserScript==
-// @name         Salt-UI
-// @namespace    http://salt.is.lovely/
-// @version      0.1.1
-// @description  miaomiaomiao?
-// @author       Salt
-// @match        https://mcbbs-wiki.cn/*
-// @grant        none
-// ==/UserScript==
 "use strict";
 (function () {
     if (!HTMLElement.prototype.addClass) {
@@ -102,6 +93,7 @@
         };
     }
 })();
+"use strict";
 (function () {
     const i18n = {
         yes: '是的', no: '不是',
@@ -119,10 +111,11 @@
         window.SaltConfirm = saltConfirm;
         window.SaltToolTip = saltToolTip;
         window.SaltHoverToolTip = saltHoverToolTip;
-        window.SaltWrite = write;
         window.Salt$ = salt$;
         window.SaltRead = readWithDefault;
+        window.SaltWrite = write;
         window.SaltReadWithDefault = readWithDefault;
+        window.SaltAssert = assert;
     }
     function assert(condition, msg) {
         if (!condition)
@@ -357,13 +350,20 @@
 "use strict";
 (function () {
     let s = document.createElement('style');
-    s.textContent = `@keyframes saltfromTop{from{opacity:0;top:0;transition-timing-function:ease-out}to{opacity:1;top:50%;transition-timing-function:ease-out}}@keyframes saltfadeTop{from{opacity:1;top:50%;transition-timing-function:ease-in}to{opacity:0;top:0;transition-timing-function:ease-in}}@keyframes saltfade-in{from{opacity:0}to{opacity:1}}@keyframes saltfade-out{from{opacity:1}to{opacity:0}}.fade,.fade-out{opacity:0;pointer-events:none}.fade.out,.fade-out.out{animation:saltfade-out 0.3s}.fade.top,.fade-out.top{animation:saltfadeTop 0.3s}.fade-in{opacity:1}.fade-in.in{animation:saltfade-in 0.3s}.fade-in.top{animation:saltfromTop 0.3s}.btn{cursor:pointer;user-select:none;text-align:center}.btn.disable{cursor:not-allowed;pointer-events:none}.saltConfirmContainer{position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);width:25rem;max-width:80vw;min-width:16rem;max-height:80vh;z-index:10000;background-color:#f9f9f9;background-clip:content-box;border:8px solid rgba(102,102,102,0.5);border-radius:8px;box-shadow:2px 2px 5px 1px #222;overflow:hidden;font-size:1rem;user-select:none}.saltConfirmContainer>center{padding:0.5rem 1rem 1rem;border-bottom:1px solid #666}.saltConfirmContainer .btn{box-sizing:border-box;float:left;width:calc(50% - 2rem);padding:1rem;margin:0 1rem 0 1rem;font-size:1.15rem;line-height:1.15rem;background-color:transparent}.saltConfirmContainer .close{position:absolute;width:2rem;height:2rem;top:0;right:0;padding:0;margin:0;border-radius:1rem;font-size:2rem;line-height:2rem;text-align:center}.saltToolTip{position:absolute;left:var(--left, 50%);top:var(--top, 50%);min-width:2rem;max-width:40vw;min-height:1rem;max-height:40vh;padding:0.5rem;z-index:10010;background-color:#f9f9f9;border-radius:0.25rem;box-shadow:2px 2px 5px 1px #222;font-size:1rem;white-space:normal}
-    `;
+    s.textContent = `@keyframes saltfromTop{from{opacity:0;top:0;transition-timing-function:ease-out}to{opacity:1;top:50%;transition-timing-function:ease-out}}@keyframes saltfadeTop{from{opacity:1;top:50%;transition-timing-function:ease-in}to{opacity:0;top:0;transition-timing-function:ease-in}}@keyframes saltfade-in{from{opacity:0}to{opacity:1}}@keyframes saltfade-out{from{opacity:1}to{opacity:0}}.fade,.fade-out{opacity:0;pointer-events:none}.fade.out,.fade-out.out{animation:saltfade-out 0.3s}.fade.top,.fade-out.top{animation:saltfadeTop 0.3s}.fade-in{opacity:1}.fade-in.in{animation:saltfade-in 0.3s}.fade-in.top{animation:saltfromTop 0.3s}.btn{cursor:pointer;user-select:none;text-align:center}.btn.disable{cursor:not-allowed;pointer-events:none}.saltConfirmContainer{position:fixed;left:50%;top:50%;transform:translate(-50%, -50%);width:25rem;max-width:80vw;min-width:16rem;max-height:80vh;z-index:10000;background-color:#f9f9f9;background-clip:content-box;border:8px solid rgba(102,102,102,0.5);border-radius:8px;box-shadow:2px 2px 5px 1px #222;overflow:hidden;font-size:1rem;user-select:none}.saltConfirmContainer>center{padding:0.5rem 1rem 1rem;border-bottom:1px solid #666}.saltConfirmContainer .btn{box-sizing:border-box;float:left;width:calc(50% - 2rem);padding:1rem;margin:0 1rem 0 1rem;font-size:1.15rem;line-height:1.15rem;background-color:transparent}.saltConfirmContainer .close{position:absolute;width:2rem;height:2rem;top:0;right:0;padding:0;margin:0;border-radius:1rem;font-size:2rem;line-height:2rem;text-align:center}.saltToolTip{position:absolute;left:var(--left, 50%);top:var(--top, 50%);min-width:2rem;max-width:50vw;min-height:1rem;max-height:50vh;padding:0.25rem 0.5rem;z-index:10010;background-color:#f9f9f9;box-shadow:2px 2px 5px 1px #666;transition:box-shadow 0.3s ease;font-size:1rem;white-space:normal}.saltToolTip:hover{box-shadow:1px 1px 3px 0px #666}#saltUI-setting{padding-top:0 !important}#saltUI-setting .icon{width:20px;height:20px;fill:#000;border-radius:2px;opacity:0.5}#saltUI-setting:active .icon{box-shadow:0 0 0 1px #fff, 0 0 0 3px #36c}#settingPanel{position:fixed;padding:0.5rem 0;min-height:1rem;max-height:70vh;background-color:#f9f9f9;box-shadow:1px 1px 3px 0px #666;border-radius:2px;z-index:9990}#settingPanel .setting{background-color:transparent;transition:background-color 0.1s ease}#settingPanel .setting:hover{background-color:rgba(153,153,153,0.2)}#settingPanel .setting:active{background-color:rgba(153,153,153,0.5)}#settingPanel .setting span{display:inline-block;box-sizing:border-box}
+`;
     document.head.appendChild(s);
 })();
 "use strict";
 (function () {
-    const read = window.SaltRead, write = window.SaltRead, $ = window.Salt$, bindtooltip = window.SaltHoverToolTip;
+    if (typeof window.SaltUIMarkMCBBSWiki == 'boolean' && window.SaltUIMarkMCBBSWiki == true) {
+        console.warn('检测到重复启用SaltUI-MCBBSWiki模块');
+        return;
+    }
+    else {
+        window.SaltUIMarkMCBBSWiki = true;
+    }
+    const read = window.SaltRead, write = window.SaltWrite, $ = window.Salt$, bindtooltip = window.SaltHoverToolTip;
     const userIntroducion = [
         { name: 'salt_lovely', nick: '盐酱', state: 'MCBBSWiki行政员, 负责前端和巡查', color: '#0040ff' },
         { name: 'eicy', nick: '幻沙', state: 'MCBBSWiki站长, 负责掏钱(划掉)后端' },
@@ -377,37 +377,128 @@
         { name: '凛夜丶雨月', state: 'MCBBSWiki吉祥物巡查员' },
     ];
     function userIntroduce() {
+        let b = read('saltUI-userIntroduceSetting', true);
+        if (!b)
+            return;
     }
     function reconfirmRollback() {
-        let main = () => {
-            var _a, _b, _c, _d, _e, _f, _g, _h;
-            let anchor = $('.mw-rollback-link a');
-            for (let a of anchor) {
-                let href = (_a = a.getAttribute('href')) !== null && _a !== void 0 ? _a : '';
-                let times = (_d = ((_c = ((_b = a.textContent) !== null && _b !== void 0 ? _b : '').match(/回退(.+)次/i)) !== null && _c !== void 0 ? _c : [null, null])[1]) !== null && _d !== void 0 ? _d : '未知数量';
-                let user = decodeURI((_f = ((_e = href.match(/from=([^\&]+)\&/i)) !== null && _e !== void 0 ? _e : [null, null])[1]) !== null && _f !== void 0 ? _f : '未知用户名')
-                    .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\+/g, '_');
-                let page = decodeURI((_h = ((_g = href.match(/title=([^\&]+)\&/i)) !== null && _g !== void 0 ? _g : [null, null])[1]) !== null && _h !== void 0 ? _h : '未知页面名')
-                    .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\%26/g, '&amp;');
-                let str = '回退由 <b>' + user + '</b> 对 <b>' + page + '</b> 作出的<b>' + times + '</b>次编辑';
-                bindtooltip(a, str, true);
-                let handler = (ev) => {
-                    ev.preventDefault();
-                    window.SaltConfirm({
-                        text: '确定要' + str + '吗？',
-                        confirm: '确认回退',
-                        cancel: '手滑点错',
-                        isHTML: true
-                    }).then((res) => {
-                        if (res)
-                            window.location.href = href;
-                    });
-                };
-                a.addEventListener('click', handler);
-                a.addEventListener('touchend', handler);
-            }
-        };
-        main();
+        var _a, _b, _c, _d, _e, _f, _g, _h;
+        let b = read('saltUI-reconfirmRollbackSetting', true);
+        if (!b)
+            return;
+        let anchor = $('.mw-rollback-link a');
+        for (let a of anchor) {
+            let href = (_a = a.getAttribute('href')) !== null && _a !== void 0 ? _a : '';
+            let times = (_d = ((_c = ((_b = a.textContent) !== null && _b !== void 0 ? _b : '').match(/回退(.+)次/i)) !== null && _c !== void 0 ? _c : [null, null])[1]) !== null && _d !== void 0 ? _d : '未知数量';
+            let user = decodeURI((_f = ((_e = href.match(/from=([^\&]+)\&/i)) !== null && _e !== void 0 ? _e : [null, null])[1]) !== null && _f !== void 0 ? _f : '未知用户名')
+                .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\+/g, '_');
+            let page = decodeURI((_h = ((_g = href.match(/title=([^\&]+)\&/i)) !== null && _g !== void 0 ? _g : [null, null])[1]) !== null && _h !== void 0 ? _h : '未知页面名')
+                .replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/\%26/g, '&amp;');
+            let str = '回退由 <b>' + user + '</b> 对 <b>' + page + '</b> 作出的<b>' + times + '</b>次编辑';
+            bindtooltip(a, str, true);
+            let handler = (ev) => {
+                ev.preventDefault();
+                window.SaltConfirm({
+                    text: '确定要' + str + '吗？',
+                    confirm: '确认回退',
+                    cancel: '手滑点错',
+                    isHTML: true
+                }).then((res) => {
+                    if (res)
+                        window.location.href = href;
+                });
+            };
+            a.addEventListener('click', handler);
+            a.addEventListener('touchend', handler);
+        }
     }
-    $(reconfirmRollback, userIntroduce);
+    function refToolTip() {
+        var _a;
+        let b = read('saltUI-refToolTip', true);
+        if (!b)
+            return;
+        let refs = $('sup.reference');
+        for (let ref of refs) {
+            let a = ref.querySelector('a');
+            if (!a || !a.href)
+                continue;
+            let href = (_a = a.getAttribute('href')) !== null && _a !== void 0 ? _a : '';
+            let li = $(href)[0];
+            console.log(li);
+            if (!li)
+                continue;
+            let text = li.querySelector('.reference-text');
+            console.log(text);
+            if (!text)
+                continue;
+            bindtooltip(ref, text, true);
+        }
+    }
+    function setting() {
+        let _svg = `<svg class="icon" style="vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M650.368 192.64L362.88 480.064l-30.144 90.496-44.416 44.416 120.704 120.704 44.352-44.416 90.56-30.144 287.424-287.488-180.992-180.992z m271.552 150.848c16.64 16.64 16.64 43.648 0 60.288l-331.904 331.904-90.496 30.208-60.352 60.288a42.688 42.688 0 0 1-60.352 0l-180.992-180.992a42.688 42.688 0 0 1 0-60.352l60.288-60.352 30.208-90.496L620.16 102.08c16.64-16.64 43.648-16.64 60.288 0l241.408 241.408z m-271.552-30.208l60.352 60.352-211.2 211.2-60.352-60.352 211.2-211.2zM182.72 720.64l120.704 120.704-60.352 60.352-181.056-60.352 120.704-120.704z"></path></svg>`;
+        let insertPlace = document.querySelector('.vector-menu-content-list'), container = document.createElement('li');
+        let frag = document.createDocumentFragment(), a = document.createElement('a');
+        window.SaltAssert((insertPlace instanceof HTMLElement), '未找到顶部栏, 无法添加设置按钮');
+        a.innerHTML = _svg;
+        a.href = 'javascript:;';
+        container.id = 'saltUI-setting';
+        let settingPanel = document.createElement('div');
+        settingPanel.id = 'settingPanel';
+        settingPanel.style.display = 'none';
+        settingPanel.innerHTML = '<div style="text-align:center"><span style="font-size:1rem">SaltUI设置</span><span style="font-size:.5rem">(需刷新页面生效)</span></div>';
+        let posFix = () => {
+            var _a;
+            if (settingPanel.style.display == 'none')
+                return;
+            let l = settingPanel.offsetLeft, t = settingPanel.offsetTop, r = l + settingPanel.offsetWidth, b = t + settingPanel.offsetHeight;
+            let ww = (_a = window.innerWidth) !== null && _a !== void 0 ? _a : document.documentElement.clientWidth;
+            settingPanel.style.left = (container.offset().left + container.offsetWidth - settingPanel.offsetWidth / 2) + 'px';
+            settingPanel.style.top = (container.getBoundingClientRect().top + container.offsetHeight) + 'px';
+            if (l < 0)
+                settingPanel.style.left = '0px';
+            else if (r > ww)
+                settingPanel.style.left = (ww - settingPanel.offsetWidth) + 'px';
+        };
+        a.onclick = () => {
+            settingPanel.style.display = 'block';
+            posFix();
+        };
+        window.addEventListener('resize', posFix);
+        let checkMouse = (e) => {
+            let l = settingPanel.offsetLeft, t = settingPanel.offsetTop, r = l + settingPanel.offsetWidth, b = t + settingPanel.offsetHeight;
+            let x = e.clientX, y = e.clientY;
+            return x >= l && x <= r && y >= t && y <= b;
+        };
+        window.addEventListener('mousedown', (e) => {
+            if (settingPanel.style.display == 'block' && !checkMouse(e))
+                settingPanel.style.display = 'none';
+        });
+        let reconfirmRollbackSetting = bindBooleanSetting('回退页面前再确认', 'reconfirmRollbackSetting');
+        let refToolTipSetting = bindBooleanSetting('用提示框显示注释', 'refToolTip');
+        let userIntroduceSetting = bindBooleanSetting('显示活跃用户介绍（未实装）', 'userIntroduceSetting');
+        function bindBooleanSetting(setting, key) {
+            let b = read('saltUI-' + key, true), isEnable = b, text = ['启用', '禁用'];
+            let div = document.createElement('div'), disp = document.createElement('span'), showEnable = document.createElement('span');
+            div.setAttribute('class', 'btn setting');
+            div.setAttribute('style', 'width:20rem;padding:.25rem .5rem;');
+            disp.textContent = setting;
+            disp.setAttribute('style', 'width:60%;padding-left:1rem;text-align:left;');
+            showEnable.textContent = isEnable ? text[0] : text[1];
+            showEnable.setAttribute('style', 'width:40%;text-align:center;');
+            div.appendChild(disp);
+            div.appendChild(showEnable);
+            div.onclick = () => {
+                isEnable = !isEnable;
+                write('saltUI-' + key, isEnable);
+                showEnable.textContent = isEnable ? text[0] : text[1];
+            };
+            settingPanel.appendChild(div);
+            return div;
+        }
+        document.body.appendChild(settingPanel);
+        frag.appendChild(container);
+        container.appendChild(a);
+        insertPlace.insertBefore(frag, insertPlace.children[1]);
+    }
+    $(setting, reconfirmRollback, refToolTip, userIntroduce);
 })();

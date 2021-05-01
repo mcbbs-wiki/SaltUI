@@ -1,4 +1,6 @@
 interface Window {
+    /**防止因重复启用导致功能冲突 */
+    SaltUIMarkMCBBSWiki: boolean,
     /**
      * 显示一个确认框, 返回一个Promise<boolean>, 用 .then((result)=>{ }) 进行后续处理
      * @param argu 要显示的内容, 一串字符串, 如果是HTML代码请使用对象传参
@@ -72,6 +74,12 @@ interface Window {
      * @param key 键值
      */
     SaltReadWithDefault<T>(key: string, defaultValue: T): T,
+    /** 
+     * assert: 断言
+     * @param condition 为假时报错
+     * @param msg 报错语句，默认为“发生错误”
+     * */
+    SaltAssert(condition: any, msg?: string): asserts condition,
 }
 interface HTMLElement {
     /**
