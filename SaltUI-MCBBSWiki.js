@@ -435,11 +435,12 @@
         }
     }
     function setting() {
+        var _a;
         let _svg = `<svg class="icon" style="vertical-align: middle;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"><path d="M650.368 192.64L362.88 480.064l-30.144 90.496-44.416 44.416 120.704 120.704 44.352-44.416 90.56-30.144 287.424-287.488-180.992-180.992z m271.552 150.848c16.64 16.64 16.64 43.648 0 60.288l-331.904 331.904-90.496 30.208-60.352 60.288a42.688 42.688 0 0 1-60.352 0l-180.992-180.992a42.688 42.688 0 0 1 0-60.352l60.288-60.352 30.208-90.496L620.16 102.08c16.64-16.64 43.648-16.64 60.288 0l241.408 241.408z m-271.552-30.208l60.352 60.352-211.2 211.2-60.352-60.352 211.2-211.2zM182.72 720.64l120.704 120.704-60.352 60.352-181.056-60.352 120.704-120.704z"></path></svg>`;
-        let insertPlace = document.querySelector('.vector-menu-content-list'), container = document.createElement('li');
+        let insertPlace = (_a = $('.vector-menu-content-list')[0]) !== null && _a !== void 0 ? _a : $('#p-personal')[0], container = document.createElement('li');
         let frag = document.createDocumentFragment(), a = document.createElement('a');
         window.SaltAssert((insertPlace instanceof HTMLElement), '未找到顶部栏, 无法添加设置按钮');
-        a.innerHTML = _svg;
+        a.innerHTML = _svg + 'SaltUI设置';
         a.href = 'javascript:;';
         container.id = 'saltUI-setting';
         let settingPanel = document.createElement('div');
@@ -452,8 +453,8 @@
                 return;
             let l = settingPanel.offsetLeft, t = settingPanel.offsetTop, r = l + settingPanel.offsetWidth, b = t + settingPanel.offsetHeight;
             let ww = (_a = window.innerWidth) !== null && _a !== void 0 ? _a : document.documentElement.clientWidth;
-            settingPanel.style.left = (container.offset().left + container.offsetWidth - settingPanel.offsetWidth / 2) + 'px';
-            settingPanel.style.top = (container.getBoundingClientRect().top + container.offsetHeight) + 'px';
+            settingPanel.style.left = (l = container.offset().left + container.offsetWidth / 2 - settingPanel.offsetWidth / 2) + 'px';
+            settingPanel.style.top = (r = container.getBoundingClientRect().top + container.offsetHeight) + 'px';
             if (l < 0)
                 settingPanel.style.left = '0px';
             else if (r > ww)
